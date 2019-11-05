@@ -8,26 +8,26 @@ from p2pool.util import math
 # changes can be done by changing one, then the other
 
 nets = dict(
-    blackcoin=math.Object(
-        PARENT=networks.nets['blackcoin'],
-        SHARE_PERIOD=15, # seconds
-        CHAIN_LENGTH=12*60*60//15, # shares
-        REAL_CHAIN_LENGTH=12*60*60//15, # shares
+    denarius=math.Object(
+        PARENT=networks.nets['denarius'],
+        SHARE_PERIOD=6, # seconds
+        CHAIN_LENGTH=12*60*60//6, # shares
+        REAL_CHAIN_LENGTH=12*60*60//6, # shares
         TARGET_LOOKBEHIND=20, # shares
         SPREAD=10, # blocks
         IDENTIFIER='e037d5b8c6923610'.decode('hex'),
         PREFIX='7208c1a53ef659b0'.decode('hex'),
-        P2P_PORT=8777,
+        P2P_PORT=33369,
         MIN_TARGET=0,
         MAX_TARGET=2**256//2**20 - 1,
         PERSIST=True,
-        WORKER_PORT=8336,
-        BOOTSTRAP_ADDRS='198.52.200.75'.split(' '),
+        WORKER_PORT=1337,
+        BOOTSTRAP_ADDRS='dnsseed.denarius.pro'.split(' '),
         ANNOUNCE_CHANNEL='#p2pool-alt',
-        VERSION_CHECK=lambda v: v >= 60011,
+        VERSION_CHECK=lambda v: v >= 33900,
     ),
-    blackcoin_testnet=math.Object(
-        PARENT=networks.nets['blackcoin_testnet'],
+    denarius_testnet=math.Object(
+        PARENT=networks.nets['denarius_testnet'],
         SHARE_PERIOD=15, # seconds
         CHAIN_LENGTH=12*60*60//15, # shares
         REAL_CHAIN_LENGTH=12*60*60//15, # shares
@@ -42,7 +42,7 @@ nets = dict(
         WORKER_PORT=18336,
         BOOTSTRAP_ADDRS='198.52.200.75'.split(' '),
         ANNOUNCE_CHANNEL='#p2pool-alt',
-        VERSION_CHECK=lambda v: v >= 60011,
+        VERSION_CHECK=lambda v: v >= 33900,
     ),
 )
 for net_name, net in nets.iteritems():

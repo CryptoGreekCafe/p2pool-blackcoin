@@ -273,7 +273,7 @@ class Share(object):
         )
         merkle_root = bitcoin_data.check_merkle_link(self.gentx_hash, self.merkle_link)
         self.header = dict(self.min_header, merkle_root=merkle_root)
-        self.pow_hash = self.hash = self.header_hash = bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(self.header))
+        self.pow_hash = self.hash = self.header_hash = bitcoin_data.tribus(bitcoin_data.block_header_type.pack(self.header))
         
         if self.target > net.MAX_TARGET:
             from p2pool import p2p

@@ -87,12 +87,12 @@ class WorkerBridge(worker_interface.WorkerBridge):
         def compute_work():
             t = self.node.bitcoind_work.value
             bb = self.node.best_block_header.value
-            if bb is not None and bb['previous_block'] == t['previous_block'] and bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(bb)) <= t['bits'].target:
+            if bb is not None and bb['previous_block'] == t['previous_block'] and bitcoin_data.tribus(bitcoin_data.block_header_type.pack(bb)) <= t['bits'].target:
                 print 'Skipping from block %x to block %x!' % (bb['previous_block'],
                     bitcoin_data.hash256(bitcoin_data.block_header_type.pack(bb)))
                 t = dict(
                     version=bb['version'],
-                    previous_block=bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(bb)),
+                    previous_block=bitcoin_data.tribus(bitcoin_data.block_header_type.pack(bb)),
                     bits=self.node.pow_bits, # not always true
                     coinbaseflags='',
                     height=t['height'] + 1,
@@ -272,7 +272,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
                     coinbase=(script.create_push_script([
                         self.current_work.value['height'],
                         ] + ([mm_data] if mm_data else []) + [
-                    ]) + self.current_work.value['coinbaseflags'])[:100] + '\nGot no time to stand now\nIf you stop, you lose',
+                    ]) + self.current_work.value['coinbaseflags'])[:100] + '\nDenarius\nBetter than Bitcoin',
                     nonce=random.randrange(2**32),
                     pubkey_hash=pubkey_hash,
                     subsidy=self.current_work.value['subsidy'],
@@ -342,7 +342,7 @@ class WorkerBridge(worker_interface.WorkerBridge):
             new_packed_gentx = packed_gentx[:-self.COINBASE_NONCE_LENGTH-4] + coinbase_nonce + packed_gentx[-4:] if coinbase_nonce != '\0'*self.COINBASE_NONCE_LENGTH else packed_gentx
             new_gentx = bitcoin_data.tx_type.unpack(new_packed_gentx) if coinbase_nonce != '\0'*self.COINBASE_NONCE_LENGTH else gentx
             
-            header_hash = pow_hash = bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(header))
+            header_hash = pow_hash = bitcoin_data.tribus(bitcoin_data.block_header_type.pack(header))
             try:
                 if pow_hash <= header['bits'].target or p2pool.DEBUG:
                     helper.submit_block(dict(header=header, txs=[new_gentx] + other_transactions, signature=''), False, self.node.factory, self.node.bitcoind, self.node.bitcoind_work, self.node.net)

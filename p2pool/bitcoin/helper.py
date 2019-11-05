@@ -71,7 +71,7 @@ def getwork(bitcoind, use_getblocktemplate=False):
 @deferral.retry('Error submitting primary block: (will retry)', 10, 10)
 def submit_block_p2p(block, factory, net):
     if factory.conn.value is None:
-        print >>sys.stderr, 'No bitcoind connection when block submittal attempted! %s%064x' % (net.PARENT.BLOCK_EXPLORER_URL_PREFIX, bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(block['header'])))
+        print >>sys.stderr, 'No bitcoind connection when block submittal attempted! %s%064x' % (net.PARENT.BLOCK_EXPLORER_URL_PREFIX, bitcoin_data.tribus(bitcoin_data.block_header_type.pack(block['header'])))
         raise deferral.RetrySilentlyException()
     factory.conn.value.send_block(block=block)
 
@@ -84,7 +84,7 @@ def submit_block_rpc(block, ignore_failure, bitcoind, bitcoind_work, net):
     else:
         result = yield bitcoind.rpc_getmemorypool(bitcoin_data.block_type.pack(block).encode('hex'))
         success = result
-    success_expected = bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(block['header'])) <= block['header']['bits'].target
+    success_expected = bitcoin_data.tribus(bitcoin_data.block_header_type.pack(block['header'])) <= block['header']['bits'].target
     if (not success and success_expected and not ignore_failure) or (success and not success_expected):
         print >>sys.stderr, 'Block submittal result: %s (%r) Expected: %s' % (success, result, success_expected)
 

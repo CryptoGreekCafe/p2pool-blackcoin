@@ -80,7 +80,7 @@ class P2PNode(p2p.Node):
         return shares
     
     def handle_bestblock(self, header, peer):
-        if bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(header)) > header['bits'].target:
+        if bitcoin_data.tribus(bitcoin_data.block_header_type.pack(header)) > header['bits'].target:
             raise p2p.PeerMisbehavingError('received block header fails PoW test')
         self.node.handle_header(header)
     
@@ -204,16 +204,16 @@ class Node(object):
             self.pow_subsidy = self.bitcoind_work.value['subsidy']
 
             # check that header matches current target
-            if not (bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(new_header)) <= self.bitcoind_work.value['bits'].target):
+            if not (bitcoin_data.tribus(bitcoin_data.block_header_type.pack(new_header)) <= self.bitcoind_work.value['bits'].target):
                 return
             bitcoind_best_block = self.bitcoind_work.value['previous_block']
             if (self.best_block_header.value is None
                 or (
                     new_header['previous_block'] == bitcoind_best_block and
-                    bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(self.best_block_header.value)) == bitcoind_best_block
+                    bitcoin_data.tribus(bitcoin_data.block_header_type.pack(self.best_block_header.value)) == bitcoind_best_block
                 ) # new is child of current and previous is current
                 or (
-                    bitcoin_data.scrypt(bitcoin_data.block_header_type.pack(new_header)) == bitcoind_best_block and
+                    bitcoin_data.tribus(bitcoin_data.block_header_type.pack(new_header)) == bitcoind_best_block and
                     self.best_block_header.value['previous_block'] != bitcoind_best_block
                 )): # new is current and previous is not a child of current
                 self.best_block_header.set(new_header)

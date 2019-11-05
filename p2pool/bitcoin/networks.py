@@ -22,38 +22,38 @@ def get_subsidy(bitcoind, target):
     defer.returnValue(res)
 
 nets = dict(
-    blackcoin=math.Object(
-        P2P_PREFIX='70352205'.decode('hex'),
-        P2P_PORT=15714,
-        ADDRESS_VERSION=25,
-        RPC_PORT=15715,
+    denarius=math.Object(
+        P2P_PREFIX='faf2efb4'.decode('hex'),
+        P2P_PORT=33369,
+        ADDRESS_VERSION=30,
+        RPC_PORT=32369,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
-            'blackcoinaddress' in (yield bitcoind.rpc_help()) and
+            'denariusaddress' in (yield bitcoind.rpc_help()) and
             not (yield bitcoind.rpc_getinfo())['testnet']
         )),
         SUBSIDY_FUNC=lambda bitcoind, target: 10000*100000000,
         BLOCK_PERIOD=60, # s
-        SYMBOL='BC',
-        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'BlackCoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/BlackCoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.blackcoin'), 'blackcoin.conf'),
-        BLOCK_EXPLORER_URL_PREFIX='http://blocks.blackcoin.pw/block/',
-        ADDRESS_EXPLORER_URL_PREFIX='http://blocks.blackcoin.pw/address/',
-        TX_EXPLORER_URL_PREFIX='http://blocks.blackcoin.pw/tx/',
+        SYMBOL='D',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Denarius') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Denarius/') if platform.system() == 'Darwin' else os.path.expanduser('~/.denarius'), 'denarius.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='https://www.coinexplorer.net/D/block/',
+        ADDRESS_EXPLORER_URL_PREFIX='https://www.coinexplorer.net/D/address/',
+        TX_EXPLORER_URL_PREFIX='https://www.coinexplorer.net/D/transaction/',
         SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.01e8,
     ),
-    blackcoin_testnet=math.Object(
+    denarius_testnet=math.Object(
         P2P_PREFIX='cdf2c0ef'.decode('hex'),
-        P2P_PORT=25714,
-        ADDRESS_VERSION=111,
-        RPC_PORT=25715,
+        P2P_PORT=33369,
+        ADDRESS_VERSION=18,
+        RPC_PORT=32368,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
-            'blackcoinaddress' in (yield bitcoind.rpc_help()) and
+            'denariuscoinaddress' in (yield bitcoind.rpc_help()) and
             (yield bitcoind.rpc_getinfo())['testnet']
         )),
         SUBSIDY_FUNC=lambda bitcoind, target: 10000*100000000,
         BLOCK_PERIOD=60, # s
-        SYMBOL='BC',
+        SYMBOL='D',
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'BlackCoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/BlackCoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.blackcoin'), 'blackcoin.conf'),
         BLOCK_EXPLORER_URL_PREFIX='http://testnet/block/',
         ADDRESS_EXPLORER_URL_PREFIX='http://testnet/address/',
