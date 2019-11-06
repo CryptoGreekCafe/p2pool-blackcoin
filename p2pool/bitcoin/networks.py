@@ -31,8 +31,8 @@ nets = dict(
             'denariusaddress' in (yield bitcoind.rpc_help()) and
             not (yield bitcoind.rpc_getinfo())['testnet']
         )),
-        SUBSIDY_FUNC=lambda bitcoind, target: 10000*100000000,
-        BLOCK_PERIOD=60, # s
+        SUBSIDY_FUNC=lambda bitcoind, target: 3000000*100000000,
+        BLOCK_PERIOD=30, # s
         SYMBOL='D',
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Denarius') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Denarius/') if platform.system() == 'Darwin' else os.path.expanduser('~/.denarius'), 'denarius.conf'),
         BLOCK_EXPLORER_URL_PREFIX='https://www.coinexplorer.net/D/block/',
@@ -52,7 +52,7 @@ nets = dict(
             (yield bitcoind.rpc_getinfo())['testnet']
         )),
         SUBSIDY_FUNC=lambda bitcoind, target: 10000*100000000,
-        BLOCK_PERIOD=60, # s
+        BLOCK_PERIOD=30, # s
         SYMBOL='D',
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'BlackCoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/BlackCoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.blackcoin'), 'blackcoin.conf'),
         BLOCK_EXPLORER_URL_PREFIX='http://testnet/block/',
